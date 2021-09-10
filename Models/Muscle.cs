@@ -17,11 +17,14 @@ namespace ClassyHeist.Models
 
         public void PerformSkill(Bank bank)
         {
-            bank.SecurityGuardScore -= SkillLevel;
-            Console.WriteLine($"{Name} is attacking the guards. Decreased security {SkillLevel} points");
-            if (bank.SecurityGuardScore <= 0)
+            if (bank.SecurityGuardScore > 0)
             {
-                Console.WriteLine($"{Name} has disabled the guards!");
+                bank.SecurityGuardScore -= SkillLevel;
+                Console.WriteLine($"{Name} is attacking the guards. Decreased security {SkillLevel} points");
+                if (bank.SecurityGuardScore <= 0)
+                {
+                    Console.WriteLine($"{Name} has disabled the guards!");
+                }
             }
         }
 

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ClassyHeist.Models
 {
@@ -14,7 +15,20 @@ namespace ClassyHeist.Models
         {
             get
             {
-                return AlarmScore > 0 && VaultScore > 0 && SecurityGuardScore > 0;
+                return AlarmScore > 0 || VaultScore > 0 || SecurityGuardScore > 0;
+            }
+        }
+
+        private Dictionary<string, int> _securityScores
+        {
+            get
+            {
+                return new Dictionary<string, int>
+                {
+                    {"Alarms", AlarmScore},
+                    {"Vault", VaultScore},
+                    {"Security Guards", SecurityGuardScore}
+                };
             }
         }
 
@@ -22,18 +36,7 @@ namespace ClassyHeist.Models
         {
             get
             {
-                if (AlarmScore > VaultScore && AlarmScore > SecurityGuardScore)
-                {
-                    return "Alarms";
-                }
-                else if (VaultScore > AlarmScore && VaultScore > SecurityGuardScore)
-                {
-                    return "Vaults";
-                }
-                else
-                {
-                    return "Security Guards";
-                }
+                return _securityScores.OrderByDescending(s => s.Value).First().Key;
             }
         }
 
@@ -41,18 +44,7 @@ namespace ClassyHeist.Models
         {
             get
             {
-                if (AlarmScore < VaultScore && AlarmScore < SecurityGuardScore)
-                {
-                    return "Alarms";
-                }
-                else if (VaultScore < AlarmScore && VaultScore < SecurityGuardScore)
-                {
-                    return "Vaults";
-                }
-                else
-                {
-                    return "Security Guards";
-                }
+                return _securityScores.OrderBy(s => s.Value).First().Key;
             }
         }
 
