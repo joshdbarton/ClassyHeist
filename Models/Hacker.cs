@@ -17,11 +17,12 @@ namespace ClassyHeist.Models
 
         public void PerformSkill(Bank bank)
         {
-            if (bank.AlarmScore > 0)
+            var alarmScore = bank.GetSystemScore("Alarm Score");
+            if (alarmScore.Score > 0)
             {
-                bank.AlarmScore -= SkillLevel;
+                alarmScore.Score -= SkillLevel;
                 Console.WriteLine($"{Name} has is hacking the alarm system. Decreased security {SkillLevel} points");
-                if (bank.AlarmScore <= 0)
+                if (alarmScore.Score <= 0)
                 {
                     Console.WriteLine($"{Name} has disabled the alarm system!");
                 }

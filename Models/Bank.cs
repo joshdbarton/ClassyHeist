@@ -7,28 +7,46 @@ namespace ClassyHeist.Models
     public class Bank
     {
         public int CashOnHand { get; set; }
-        public int AlarmScore { get; set; }
-        public int VaultScore { get; set; }
-        public int SecurityGuardScore { get; set; }
+
+        private List<BankSystemScore> _systemScores;
+
+        public BankSystemScore GetSystemScore(string systemName)
+        {
+            return _systemScores.FirstOrDefault(s => s.Name == systemName);
+        }
+
+        public Bank()
+        {
+            Random rand = new Random();
+            _systemScores = new List<BankSystemScore>
+                {
+                    new BankSystemScore
+                    {
+                        Name = "Vault Score",
+                        Score = rand.Next(101)
+                    },
+                    new BankSystemScore
+                    {
+                        Name = "Alarm Score",
+                        Score = rand.Next(101)
+                    },
+                    new BankSystemScore
+                    {
+                        Name = "Security Guard Score",
+                        Score = rand.Next(101)
+                    }
+                };
+               CashOnHand = rand.Next(50000, 1000001);
+        }
 
         public bool IsSecure
         {
             get
             {
-                return AlarmScore > 0 || VaultScore > 0 || SecurityGuardScore > 0;
-            }
-        }
-
-        private Dictionary<string, int> _securityScores
-        {
-            get
-            {
-                return new Dictionary<string, int>
-                {
-                    {"Alarms", AlarmScore},
-                    {"Vault", VaultScore},
-                    {"Security Guards", SecurityGuardScore}
-                };
+                return 
+                _systemScores.First(s => s.Name == "Alarm Score").Score > 0 || 
+                _systemScores.First(s => s.Name == "Vault Score").Score > 0 || 
+                _systemScores.First(s => s.Name == "Security Guard Score").Score > 0;
             }
         }
 
@@ -36,7 +54,7 @@ namespace ClassyHeist.Models
         {
             get
             {
-                return _securityScores.OrderByDescending(s => s.Value).First().Key;
+                return _systemScores.OrderByDescending(s => s.Score).First().Name;
             }
         }
 
@@ -44,7 +62,7 @@ namespace ClassyHeist.Models
         {
             get
             {
-                return _securityScores.OrderBy(s => s.Value).First().Key;
+                return _systemScores.OrderBy(s => s.Score).First().Name;
             }
         }
 

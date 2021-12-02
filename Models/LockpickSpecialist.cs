@@ -17,11 +17,12 @@ namespace ClassyHeist.Models
 
         public void PerformSkill(Bank bank)
         {
-            if (bank.VaultScore > 0)
+            var vaultScore = bank.GetSystemScore("Vault Score");
+            if (vaultScore.Score > 0)
             {
-                bank.VaultScore -= SkillLevel;
+                vaultScore.Score -= SkillLevel;
                 Console.WriteLine($"{Name} is cracking the vault. Decreased security {SkillLevel} points");
-                if (bank.VaultScore <= 0)
+                if (vaultScore.Score <= 0)
                 {
                     Console.WriteLine($"{Name} has opened the vault!");
                 }

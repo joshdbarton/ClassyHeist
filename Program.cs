@@ -25,7 +25,7 @@ namespace ClassyHeist
 
                 AddToRolodex(rolodex);
 
-                Bank heistBank = MakeABank();
+                Bank heistBank = new Bank();
                 heistBank.ReconReport();
                 Prompt("Press any key to continue...");
                 var team = CreateTeam(rolodex);
@@ -103,18 +103,6 @@ namespace ClassyHeist
 
             }
             return team;
-        }
-
-        static Bank MakeABank()
-        {
-            Random rand = new Random();
-            return new Bank
-            {
-                CashOnHand = rand.Next(50000, 1000001),
-                VaultScore = rand.Next(101),
-                SecurityGuardScore = rand.Next(101),
-                AlarmScore = rand.Next(101)
-            };
         }
 
         static string Prompt(string prompt)
